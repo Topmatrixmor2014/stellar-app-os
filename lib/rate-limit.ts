@@ -41,7 +41,7 @@ export class MemoryRateLimiter {
         retryAfter: Math.ceil((blocked - now) / 1000),
       };
     }
-    let ts = (this.hits.get(key) || []).filter((t) => t > now - c.windowMs);
+    const ts = (this.hits.get(key) || []).filter((t) => t > now - c.windowMs);
     if (ts.length >= c.maxRequests) {
       const v = (this.violations.get(key) || 0) + 1;
       this.violations.set(key, v);
@@ -70,4 +70,30 @@ export class MemoryRateLimiter {
       reset: now + c.windowMs,
     };
   }
+
+  check(
+    key: string,
+    limit = 120,
+    windowMs = 60000
+  ): { allowed: boolean; limit: number; remaining: number; resetAt: number } {
+    const now = Date.now();
+    const ts = (this.hits.get(key) || []).filter((t) => t > now - windowMs);
+    if (ts.length >= limit) {
+      return {
+        allowed: false,
+        limit,
+        remaining: 0,
+        resetAt: now + windowMs,
+      };
+    }
+    ts.push(now);
+    this.hits.set(key, ts);
+    return {
+      allowed: true,
+      limit,
+      remaining: Math.max(0, limit - ts.length),
+      resetAt: now + windowMs,
+    };
+  }
 }
+

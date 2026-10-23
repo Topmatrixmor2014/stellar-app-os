@@ -21,6 +21,7 @@ import Link from 'next/link';
 import { generateEsgExcel, generateEsgReport, type EsgReportData } from '@/lib/corporate';
 import { cn } from '@/lib/utils';
 import { CarbonOffsetCalculator } from '@/components/organisms/CarbonOffsetCalculator';
+import { CsrReportPanel } from '@/components/organisms/CorporateDashboard/CsrReportPanel';
 
 export function CorporateDashboard() {
   const [isExporting, setIsExporting] = useState(false);
@@ -227,6 +228,12 @@ export function CorporateDashboard() {
               </Button>
             </CardContent>
           </Card>
+
+          {/* CSR Reporting — Issue #1670 */}
+          <CsrReportPanel
+            buyerId="corporate-dashboard"
+            companyName="Acme Corp"
+          />
 
           <Card className="border-white/5 bg-stellar-navy/40">
             <CardHeader>

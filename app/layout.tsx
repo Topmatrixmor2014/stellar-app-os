@@ -1,3 +1,4 @@
+import { SponsorBadgeNotifier } from '@/components/molecules/SponsorBadges/SponsorBadgeNotifier';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -7,6 +8,7 @@ import { QueryProvider } from '@/components/providers/QueryProvider';
 import { ToastProvider } from '@/contexts/ToastContext';
 import { WalletProvider } from '@/contexts/WalletContext';
 import { NotificationProvider } from '@/contexts/NotificationContext';
+import { DeforestationAlertNotifier } from '@/components/organisms/NotificationCenter/DeforestationAlertNotifier';
 import { TimeZoneProvider } from '@/contexts/TimeZoneContext';
 import { I18nProvider } from '@/components/providers/I18nProvider';
 import { ThemeInitScript } from '@/components/providers/ThemeInitScript';
@@ -126,6 +128,8 @@ export default function RootLayout({
                     <Footer />
                     <NotificationCenterDrawer />
                     <ToastContainer />
+                    <SponsorBadgeNotifier />
+                    <DeforestationAlertNotifier />
                   </NotificationProvider>
                 </QueryProvider>
               </ToastProvider>

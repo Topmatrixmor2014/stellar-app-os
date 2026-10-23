@@ -1,5 +1,10 @@
 import { getPool } from '@/lib/db/client';
-import { computeBulkPriceQuote, getBasePricePerTon, MIN_BULK_TONS, type BulkPriceQuote } from '@/lib/marketplace/bulk-pricing';
+import {
+  computeBulkPriceQuote,
+  getBasePricePerTon,
+  MIN_BULK_TONS,
+  type BulkPriceQuote,
+} from '@/lib/marketplace/bulk-pricing';
 
 export type BulkAgreementStatus = 'draft' | 'pending' | 'active' | 'completed' | 'cancelled';
 
@@ -56,7 +61,7 @@ export async function createBulkAgreement(
   input: CreateBulkAgreementInput,
   pool = getPool()
 ): Promise<{ agreement: BulkAgreement; quote: BulkPriceQuote }> {
-  if (!Number.finite(input.tons) || input.tons < MIN_BULK_TONS) {
+  if (!Number.isFinite(input.tons) || input.tons < MIN_BULK_TONS) {
     throw new Error(`bulk agreements require at least ${MIN_BULK_TONS} tons`);
   }
   if (!input.buyer_id || !input.farmer_id) {
@@ -64,8 +69,7 @@ export async function createBulkAgreement(
   }
 
   const currency = input.currency ?? 'XLM';
-  const basePricePerTon =
-    input.base_price_per_ton ?? (await getBasePricePerTon(currency));
+  const basePricePerTon = input.base_price_per_ton ?? (await getBasePricePerTon(currency));
   const quote = computeBulkPriceQuote(input.tons, basePricePerTon, currency);
 
   const result = await pool.query(

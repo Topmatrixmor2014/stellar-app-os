@@ -19,10 +19,10 @@ export interface BulkPriceQuote {
 }
 
 export const BULK_PRICING_TIERS: BulkPricingTier[] = [
-  { id: 'tier-100', min_tons: 100, max_tons: 249, discount_rate: 0.05, },
-  { id: 'tier-250', min_tons: 250, max_tons: 499, discount_rate: 0.1, },
-  { id: 'tier-500', min_tons: 500, max_tons: 999, discount_rate: 0.15, },
-  { id: 'tier-1000', min_tons: 1000, max_tons: null, discount_rate: 0.2,  },
+  { id: 'tier-100', min_tons: 100, max_tons: 249, discount_rate: 0.05 },
+  { id: 'tier-250', min_tons: 250, max_tons: 499, discount_rate: 0.1 },
+  { id: 'tier-500', min_tons: 500, max_tons: 999, discount_rate: 0.15 },
+  { id: 'tier-1000', min_tons: 1000, max_tons: null, discount_rate: 0.2 },
 ];
 
 export const MIN_BULK_TONS = 100;
@@ -32,7 +32,7 @@ export function getBulkPricingTiers(): BulkPricingTier[] {
 }
 
 export function findBulkPricingTier(tons: number): BulkPricingTier | null {
-  if (!Number.finite(tons) || tons < MIN_BULK_TONS) {
+  if (!Number.isFinite(tons) || tons < MIN_BULK_TONS) {
     return null;
   }
   return (
@@ -47,10 +47,10 @@ export function computeBulkPriceQuote(
   basePricePerTon: number,
   currency = 'XLM'
 ): BulkPriceQuote {
-  if (!Number.finite(tons) || tons < MIN_BULK_TONS) {
+  if (!Number.isFinite(tons) || tons < MIN_BULK_TONS) {
     throw new Error(`bulk purchases require at least ${MIN_BULI_TONS} tons`);
   }
-  if (!Number.finite(basePricePerTon) || basePricePerTon <= 0) {
+  if (!Number.isFinite(basePricePerTon) || basePricePerTon <= 0) {
     throw new Error('base price per ton must be greater than zero');
   }
 
